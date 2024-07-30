@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateProfile as updateProfileAction } from '../Store/authSlice';
 import { User } from '../Appwrite/User';
 import defaultProfile from '../assets/default-profile.jpg';
+import { Oval } from 'react-loader-spinner';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const EditProfile = () => {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(userProfile?.avatar ? `https://cloud.appwrite.io/v1/storage/buckets/${import.meta.env.VITE_APPWRITE_BUCKET_ID_P_IMAGE}/files/${userProfile.avatar}/view?project=${import.meta.env.VITE_APPWRITE_PROJECT_ID}` : defaultProfile);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0]
@@ -46,10 +48,14 @@ const EditProfile = () => {
     }
 
     setError('');
+    setLoading(true);
     const updatedProfile = {
       name,
       about,
+      email: userProfile.email
     };
+
+
 
     if (avatar) {
       if (userProfile.avatar) {
@@ -66,9 +72,10 @@ const EditProfile = () => {
       dispatch(updateProfileAction(result));
       navigate(-1);
     }
+    setLoading(false);
   };
 
-  const isDisabled = !name;
+
 
   return (
     <div className='max-w-lg w-full mx-auto px-6 text-black dark:text-white flex flex-col items-center gap-2'>
@@ -103,15 +110,24 @@ const EditProfile = () => {
         placeholder="About" 
       />
       <button 
-        className={`w-full py-2 rounded-md duration-300 font-medium ${
-          isDisabled
-            ? 'bg-[#5047eb] cursor-not-allowed'
-            : 'bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0]'
-        } mt-4 `}
+        className={`w-full py-2 rounded-md duration-300 font-medium
+            bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0] mt-4 `}
         onClick={handleUpdate}
-        disabled={isDisabled}
+        disabled={loading}
       >
-        Update Profile
+        {loading ? (
+          <div className='flex items-center justify-center'>
+            <Oval
+              visible={true}
+              height="24"
+              width="24"
+              strokeWidth="4"
+              color="white"
+              secondaryColor='#d8d6fa'
+              ariaLabel="oval-loading"
+            />
+          </div>
+        ) : "Update Profile"}
       </button>
       <button className='w-full py-2 rounded-md border border-[#5047eb] text-[#5047eb] hover:text-[#3228e0] hover:border-[#3228e0] hover:bg-gray-100 duration-300' onClick={() => navigate(-1)}>Cancel</button>
     </div>

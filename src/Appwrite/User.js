@@ -15,7 +15,7 @@ export class User {
     }
 
     async completeProfile({ userId, userProfile }) {
-        const { name, avatar, about } = userProfile; // Destructure userProfile object
+        const { name, avatar, about, email } = userProfile; // Destructure userProfile object
         try {
             const user = await this.databases.createDocument(
                 config.appwriteDatabaseId,
@@ -25,7 +25,8 @@ export class User {
                     userId,
                     name,
                     avatar,
-                    about
+                    about,
+                    email
                 }
             );
             return user;
@@ -66,6 +67,25 @@ export class User {
             }
         } catch (error) {
             console.log("Appwrite service :: getProfile :: error", error);
+            return null;
+        }
+    }   
+
+    async getProfileByEmail(email) {
+        try {
+            const response = await this.databases.listDocuments(
+                config.appwriteDatabaseId,
+                config.appwriteCollectionIdUser,
+                [Query.equal("email", email)]
+            );
+            if (response.documents.length > 0) {
+                return true;
+            } else {
+                console.log(`No profile found for email: ${email}`);
+                return false;
+            }
+        } catch (error) {
+            console.log("Appwrite service :: getProfileByEmail :: error", error);
             return null;
         }
     }

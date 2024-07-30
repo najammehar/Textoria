@@ -16,13 +16,18 @@ export class Auth {
 
   async register(name, email, password) {
     try {
+      const checkEmail = await this.user.getProfileByEmail(email)
+      if (checkEmail === true) {
+          return 'email'
+      }
+
       const userAccount = await this.account.create( ID.unique(), email, password );
 
       if (userAccount) {
         const userData = await this.account.createEmailPasswordSession( email, password );
         const userProfile = await this.user.completeProfile({
           userId: userAccount.$id,
-          userProfile: { name, avatar: "", about: "" },
+          userProfile: { name: name , avatar: "", about: "", email: email },
         });
         return userProfile;
       } else {
@@ -36,13 +41,11 @@ export class Auth {
 async login(email, password) {
   try {
       // Check if there is an active session
-      const currentUser = await this.getUser();
+      const checkEmail = await this.user.getProfileByEmail(email)
+      if (checkEmail === false) {
+          return 'email'
+      }
       
-      if (currentUser) {
-          // If a session exists, return the user profile or handle accordingly
-          console.log("Session already active for user:", currentUser);
-          return await this.user.getProfile(currentUser.$id);
-      } else {
           // If no active session, create a new one
           const session = await this.account.createEmailPasswordSession(email, password);
           
@@ -52,12 +55,13 @@ async login(email, password) {
           } else {
               return null;
           }
-      }
+      
   } catch (error) {
       console.log("Appwrite service :: login :: error", error);
       return null;
   }
 }
+
 
 
 

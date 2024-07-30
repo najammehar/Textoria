@@ -5,26 +5,38 @@ import authInstance from '../Appwrite/Auth';
 import User from '../Appwrite/User';
 import { setUserData, setUserProfile } from '../Store/authSlice';
 import logoImg from '../assets/Logo.png';
-import {DarkMode} from './index'
+import { Oval } from 'react-loader-spinner';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setError('');
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    setLoading(true);
     const session = await authInstance.login(email, password);
-    if (session) {
+    console.log(session);
+    if(session === 'email') {
+      setError('Account not found');
+    } else if (session) {
       const userProfile = await User.getProfile(session.$id);
       dispatch(setUserData(session));
       dispatch(setUserProfile(userProfile));
-      navigate('/profile');
-    } else {
-      setError('Invalid email and password.');
+      navigate('/');
     }
+    else {
+      setError('Invalid Password');
+    }
+    setLoading(false);
   };
 
   return (
@@ -56,9 +68,26 @@ const Login = () => {
           {showPassword ? 'Hide' : 'Show'}
         </button>
       </div>
-      <button className='w-full py-2 rounded-md duration-300 font-medium bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0] mb-8' onClick={handleLogin}>Sign in with Email</button>
+      <button 
+        className={`w-full py-2 rounded-md duration-300 font-medium bg-[#5047eb] text-white hover:bg-[#3228e0] mb-8 ${loading ? 'opacity-50' : 'active:bg-[#5047eb]'}`} 
+        onClick={handleLogin}
+        disabled={loading}
+      >
+        {loading ? (
+          <div className='flex items-center justify-center'>
+            <Oval
+              visible={true}
+              height="24"
+              width="24"
+              strokeWidth="4"
+              color="white"
+              secondaryColor='#d8d6fa'
+              ariaLabel="oval-loading"
+            />
+          </div>
+        ) : "Sign in with Email"}
+      </button>
       <p className='max-w-sm px-6 text-sm text-gray-500 text-center'>By continuing you agree to our <u>Terms of Service</u> and <u>Privacy Policy</u></p>
-      {/* <DarkMode /> */}
     </div>
   );
 };

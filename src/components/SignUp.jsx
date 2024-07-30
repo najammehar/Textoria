@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import authInstance from '../Appwrite/Auth';
 import logoImg from '../assets/Logo.png';
 import { useDispatch } from "react-redux";
+import { Oval } from 'react-loader-spinner';
 import { setUserData, setUserProfile } from "../Store/authSlice";
+
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -13,6 +15,7 @@ const SignUp = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -20,19 +23,31 @@ const SignUp = () => {
   };
 
   const handleRegister = async () => {
+    if(!name || !email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
       return;
     }
     setError('');
-    const user = await authInstance.register(name, email, password);
+    setLoading(true);
+
     
-    if (user) {
+    
+    const user = await authInstance.register(name, email, password);
+    if(user === 'email') {
+      setError('Account with this Email already exists');
+    } else if (user) {
       navigate(`/complete-profile/${user.$id}`);
     }
+    setLoading(false);
   };
-
-  const isDisabled = !name || !email || !password || error;
 
   return (
     <div className='max-w-lg w-full mx-auto px-6 text-black dark:text-white flex flex-col items-center gap-2'>
@@ -72,12 +87,25 @@ const SignUp = () => {
         </button>
       </div>
       <button 
-      className={`w-full py-2 rounded-md duration-300 font-medium ${
-        isDisabled
-          ? 'bg-[#5047eb] cursor-not-allowed'
-          : 'bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0]'
-      } mb-8`}
-      onClick={handleRegister}>Register</button>
+      className={`w-full py-2 rounded-md duration-300 font-medium bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0] mb-8`}
+      onClick={handleRegister}
+      disabled={loading}
+      >
+        {loading ? (
+          <div className='flex items-center justify-center'>
+            <Oval
+              visible={true}
+              height="24"
+              width="24"
+              strokeWidth="4"
+              color="white"
+              secondaryColor='#d8d6fa'
+              ariaLabel="oval-loading"
+            />
+          </div>
+        ) : "Sign up with email"}
+      </button>
+
       <p className='max-w-sm px-6 text-sm text-gray-500 text-center'>By continuing you agree to our <u>Terms of Service</u> and <u>Privacy Policy</u></p>
     </div>
   );
