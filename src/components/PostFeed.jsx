@@ -3,7 +3,7 @@ import Post from '../Appwrite/Post';
 import PostCard from './PostCard';
 import { Oval } from 'react-loader-spinner';
 
-function PostFeed({ userId, status }) {
+function PostFeed({ userId, status , category }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -26,7 +26,11 @@ function PostFeed({ userId, status }) {
             if (userId && status) {
                 newPosts = await Post.getPostsByUser(userId, status, POSTS_PER_PAGE, offset);
             } else {
-                newPosts = await Post.getPosts(POSTS_PER_PAGE, offset);
+                if(!category){
+                    newPosts = await Post.getPosts(POSTS_PER_PAGE, offset);
+                } else {
+                    newPosts = await Post.getPosts(POSTS_PER_PAGE, offset, category);
+                }
             }
             
             if (newPosts.length > 0) {
@@ -51,11 +55,11 @@ function PostFeed({ userId, status }) {
         setOffset(0);
         setHasMore(true);
         setError(null);
-    }, [userId, status]);
+    }, [userId, status, category]);
 
     useEffect(() => {
         fetchPosts();
-    }, [fetchPosts, userId, status]);
+    }, [fetchPosts, userId, status, category]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(

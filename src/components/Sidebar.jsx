@@ -55,7 +55,7 @@ function Sidebar() {
                 to="/"
                 className='flex items-baseline px-1'>
                     <img className='w-6 sm:w-8' src={logoImg} alt="Logo Image" />
-                    <Logo className={`ml-[-4px] w-fit text-2xl sm:text-4xl cursor-pointer ${!open && "scale-0"}`}/>
+                    <Logo className={`ml-[-4px] w-fit text-2xl sm:text-4xl cursor-pointer ${!open && "hidden"}`}/>
                 </Link>
             </div>
             <ul>
@@ -106,7 +106,7 @@ function Sidebar() {
                     <div
                     title='Logout'
                     onClick={handleLogout}
-                    className={` flex items-center gap-x-2 px-1 py-1 mb-4 dark:text-white text-sm dark:hover:bg-gray-800 hover:bg-gray-500 hover:text-white rounded-md`}
+                    className={`cursor-pointer flex items-center gap-x-2 px-1 py-1 mb-4 dark:text-white text-sm dark:hover:bg-gray-800 hover:bg-gray-500 hover:text-white rounded-md`}
                     >
                         <div><svg className={`fill-gray-500 group-hover:fill-white`} xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e8eaed"><path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/></svg></div>                        
                         <div className={`${!open && "scale-0"}`}>Logout</div>

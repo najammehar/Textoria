@@ -94,17 +94,23 @@ export class Post {
         }
     }
 
-    async getPosts(limit, offset){
+    async getPosts(limit, offset, category){
         try {
+            const queries = [
+                Query.orderDesc("createdAt"),
+                Query.limit(limit),
+                Query.offset(offset),
+                Query.equal("status", "public")
+            ];
+    
+            if (category) {
+                queries.push(Query.equal("category", category));
+            }
+    
             const response = await this.databases.listDocuments(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionIdPosts,
-                [
-                    Query.orderDesc("createdAt"),
-                    Query.limit(limit),
-                    Query.offset(offset),
-                    Query.equal("status", "public"),
-                ]
+                queries
             );
             return response.documents;
         } catch (error) {
@@ -112,6 +118,7 @@ export class Post {
             throw error;
         }
     }
+    
 
     async getPost(slug){
         try {

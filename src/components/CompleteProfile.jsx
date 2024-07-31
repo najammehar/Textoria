@@ -4,20 +4,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import user, {User} from '../Appwrite/User';
 import { login, setUserData, setUserProfile } from '../Store/authSlice';
 import authInstance from '../Appwrite/Auth';
+import { Oval } from 'react-loader-spinner';
 
 import defaultProfile from '../assets/default-profile.jpg';
 
 const CompleteProfile = () => {
   const { userId } = useParams();
-  // const userProfile = useSelector((state) => state.auth.userProfile);
   const [name, setName] = useState('');
   const [about, setAbout] = useState('');
   const [avatar, setAvatar] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null); // Set default profile image as initial preview
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [error, setError] = useState('');
   const userService = new User();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
       const userProfile = userService.getProfile(userId)
@@ -46,6 +47,7 @@ const CompleteProfile = () => {
     }
 
     setError('');
+    setLoading(true);
     const avatarFile = avatar ? await userService.uploadAvatar(avatar) : null;
     const userProfile = {
       name,
@@ -58,9 +60,9 @@ const CompleteProfile = () => {
       const userData = await authInstance.getUser();
       dispatch(setUserData(userData));
       dispatch(setUserProfile(result));
-      // dispatch(login({ userData: session, userProfile: updatedProfile }));
       navigate('/');
     }
+    setLoading(false);
   };
   const handleSkip = async () => {
     const result = await userService.getProfile(userId);
@@ -72,7 +74,7 @@ const CompleteProfile = () => {
     }
   }
 
-  const isDisabled = !name;
+
 
   return (
     <div className='max-w-lg w-full mx-auto px-6 text-black dark:text-white flex flex-col items-center gap-2'>      
@@ -112,15 +114,23 @@ const CompleteProfile = () => {
         placeholder="About" 
       />
       <button 
-        className={`w-full py-2 rounded-md duration-300 font-medium ${
-          isDisabled
-            ? 'bg-[#5047eb] cursor-not-allowed'
-            : 'bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0]'
-        } mt-4 `}
+        className={`w-full py-2 rounded-md duration-300 font-medium bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0] mt-4 `}
         onClick={handleCompleteProfile}
-        disabled={isDisabled}
+        disabled={loading}
       >
-        Complete Profile
+        {loading ? (
+          <div className='flex items-center justify-center'>
+            <Oval
+              visible={true}
+              height="24"
+              width="24"
+              strokeWidth="4"
+              color="white"
+              secondaryColor='#d8d6fa'
+              ariaLabel="oval-loading"
+            />
+          </div>
+        ) : "Complete Profile"}
       </button>
       <button className='w-full py-2 rounded-md border border-[#5047eb] text-[#5047eb] hover:text-[#3228e0] hover:border-[#3228e0] hover:bg-gray-100 duration-300' onClick={handleSkip}>Skip For Now</button>
     </div>

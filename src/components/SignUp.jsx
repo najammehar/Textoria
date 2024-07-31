@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authInstance from '../Appwrite/Auth';
 import logoImg from '../assets/Logo.png';
-import { useDispatch } from "react-redux";
 import { Oval } from 'react-loader-spinner';
-import { setUserData, setUserProfile } from "../Store/authSlice";
-
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -14,7 +11,6 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const validateEmail = (email) => {
@@ -38,8 +34,6 @@ const SignUp = () => {
     setError('');
     setLoading(true);
 
-    
-    
     const user = await authInstance.register(name, email, password);
     if(user === 'email') {
       setError('Account with this Email already exists');
@@ -87,7 +81,7 @@ const SignUp = () => {
         </button>
       </div>
       <button 
-      className={`w-full py-2 rounded-md duration-300 font-medium bg-[#5047eb] active:bg-[#5047eb] text-white hover:bg-[#3228e0] mb-8`}
+      className={`w-full py-2 rounded-md duration-300 font-medium bg-[#5047eb] ${loading ? 'opacity-50' : 'active:bg-[#5047eb]'} text-white hover:bg-[#3228e0] mb-8`}
       onClick={handleRegister}
       disabled={loading}
       >

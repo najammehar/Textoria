@@ -8,8 +8,8 @@ import CompleteProfile from './components/CompleteProfile';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
 import user from './Appwrite/User';
-import { EditPost, Home, LandingPage, Login, SignUp } from './pages';
-import { PostDetail, PostFeed, Sidebar, WriteEditPost } from './components';
+import { EditPost, Home, LandingPage, Login, SignUp, Feed } from './pages';
+import { PostDetail, Sidebar, WriteEditPost } from './components';
 
 
 const App = () => {
@@ -125,7 +125,7 @@ const App = () => {
         
         {/* Authenticated routes */}
         <Route path="/" element={isAuthenticated ? <Home /> : <LandingPage />}>
-          <Route index element={<PostFeed />} />
+          <Route index element={<Feed />} />
           <Route path="write" element={<WriteEditPost />} />
           <Route path="profile/:userId" element={<Profile />} />
           <Route path="edit-profile" element={<EditProfile />} />
