@@ -4,6 +4,7 @@ import {RTE, Input, Button, Select} from './index'
 import {useForm} from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Oval } from 'react-loader-spinner'
 
 function WriteEditPost({post}) {
     const {register, handleSubmit, control, watch, setValue, getValues, formState: { errors }} = useForm(
@@ -245,9 +246,11 @@ function WriteEditPost({post}) {
                 {errors.content && <p className="text-red-500 text-sm -mt-3">{errors.content.message}</p>}
             </div>
             {thumbnailPreview &&
-            <img className='max-w-xl mx-auto rounded-md' src={thumbnailPreview} alt='post.title' />
+            <div className='max-w-2xl mx-auto rounded-md overflow-hidden'>
+            <img className='w-full h-full rounded-md object-contain' src={thumbnailPreview} alt='post.title' />
+            </div>
             }
-        <label className='text-center cursor-pointer bg-[#5047eb] hover:bg-[#3228e0] text-white py-2 px-4 rounded-md w-full block'>
+        <label className='text-center cursor-pointer bg-purple-60 hover:bg-blue active:bg-purple-60 text-white py-2 px-4 rounded-md w-full block'>
         <Input 
             className='hidden'
             type='file'
@@ -278,8 +281,21 @@ function WriteEditPost({post}) {
         {errors.status &&<p className="text-red-500 text-sm -mt-3">{errors.status.message}</p>}
 
         <Button type='submit'
-        className='bg-[#5047eb] hover:bg-[#3228e0] text-white py-2 px-2 rounded-md w-full block'
-        >{post ? 'update' : 'publish'}</Button>
+        disabled={loading}
+        className='bg-purple-60 hover:bg-blue active:bg-purple-60 text-white py-2 px-2 rounded-md w-full block'
+        >{loading ? (
+            <div className='flex items-center justify-center'>
+              <Oval
+                visible={true}
+                height="24"
+                width="24"
+                strokeWidth="4"
+                color="white"
+                secondaryColor='#d8d6fa'
+                ariaLabel="oval-loading"
+              />
+            </div>
+          ) : `${post ? 'Update' : 'Publish'}`}</Button>
         
     </form>
   )

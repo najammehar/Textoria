@@ -12,10 +12,19 @@ function PostFeed({ userId, status , category }) {
     const loaderRef = useRef(null);
 
     const POSTS_PER_PAGE = 4;
-
-    const handlePostDeleted = useCallback((deletedPostId) => {
+    const [deleteMessage, setDeleteMessage] = useState('');
+    const handlePostDeleted = useCallback((deletedPostId, message) => {
         setPosts(prevPosts => prevPosts.filter(post => post.$id !== deletedPostId));
+        setDeleteMessage(message);
+        setTimeout(() => setDeleteMessage(''), 3000);
     }, []);
+    const ShowMessage = ({message}) => {
+        return (
+            <div className="fixed bottom-4 right-4 bg-grey-90 dark:bg-grey-10 dark:text-white text-black shadow-lg z-10 px-4 py-2 transition-transform duration-300 rounded-md">
+                {message}
+            </div>
+        );
+    };
 
     const fetchPosts = useCallback(async () => {
         if (loading || !hasMore) return;
@@ -32,6 +41,7 @@ function PostFeed({ userId, status , category }) {
                     newPosts = await Post.getPosts(POSTS_PER_PAGE, offset, category);
                 }
             }
+
             
             if (newPosts.length > 0) {
                 setPosts(prevPosts => {
@@ -84,23 +94,11 @@ function PostFeed({ userId, status , category }) {
 
     return (
         <div className='w-full px-4'>
+            
             {posts.map((post) => (
                 <PostCard key={post.$id} post={post} onPostDeleted={handlePostDeleted} />
             ))}
             <div ref={loaderRef} className='h-10 w-full'></div>
-            {loading && (
-                <div className='flex items-center justify-center my-8'>
-                    <Oval
-                        visible={true}
-                        height="30"
-                        width="30"
-                        strokeWidth="4"
-                        color="#5047eb"
-                        secondaryColor='#d8d6fa'
-                        ariaLabel="oval-loading"
-                    />
-                </div>
-            )}
             {error && <div className='text-red-500 text-center py-4'>{error}</div>}
             {!hasMore && posts.length > 0 && (
                 <div className='dark:text-white text-center py-4'>No more posts</div>
@@ -108,6 +106,7 @@ function PostFeed({ userId, status , category }) {
             {!hasMore && posts.length === 0 && (
                 <div className='dark:text-white font-bold text-4xl text-center py-8'>No posts yet</div>
             )}
+            {deleteMessage && <ShowMessage message={deleteMessage} />}
         </div>
     );
 }

@@ -80,7 +80,7 @@ function Feed() {
                     ))}
                 </div>
                 {showLeftButton && (
-                    <div className="absolute left-4 top-0 h-full pr-5 bg-gradient-to-r from-60% from-white dark:from-black">
+                    <div className="hidden sm:block absolute left-4 top-0 h-full pr-5 bg-gradient-to-r from-60% from-white dark:from-black">
                         <button
                             onClick={handleScrollLeft}
                             className="px-2 py-2 text-black dark:text-white rounded-full hover:bg-grey-75 dark:hover:bg-grey-45 ">
@@ -89,7 +89,7 @@ function Feed() {
                     </div>
                 )}
                 {showRightButton && (
-                    <div className="absolute right-4 top-0 h-full pl-5 bg-gradient-to-l from-60% from-[#fffcff] dark:from-[#000300]">
+                    <div className="hidden sm:block absolute right-4 top-0 h-full pl-5 bg-gradient-to-l from-60% from-[#fffcff] dark:from-[#000300]">
                         <button
                             onClick={handleScrollRight}
                             className="px-2 py-2 text-black dark:text-white rounded-full hover:bg-grey-75 dark:hover:bg-grey-45 ">

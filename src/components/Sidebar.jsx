@@ -138,7 +138,7 @@ function Sidebar() {
                 
             </ul>
         </aside>
-        <nav className='sticky sm:hidden dark:text-white flex h-20 items-center border-b border-grey-45 px-4 justify-between'>
+        <nav className='sticky sm:hidden dark:text-white flex h-16 items-center border-b border-grey-45 px-4 justify-between'>
         <Link
                 to="/"
                 className='flex items-baseline px-1'>

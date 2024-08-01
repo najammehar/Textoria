@@ -1,5 +1,6 @@
 import config from "../config/config";
 import { Client, Databases, ID, Query, Storage } from "appwrite";
+import imageCompression from 'browser-image-compression';
 
 export class Post {
     client = new Client();
@@ -309,18 +310,43 @@ export class Post {
         }
     }
 
-    async thumbnailUpload(file){
+    async compressImage(file) {
+        const options = {
+            maxSizeMB: 1, // Maximum file size in MB
+            maxWidthOrHeight: 1920, // Maximum width or height
+            useWebWorker: true, // Use web worker for compression
+        };
+
         try {
+            const compressedBlob = await imageCompression(file, options);
+
+            // Convert Blob to File
+            const compressedFile = new File([compressedBlob], file.name, {
+                type: file.type,
+                lastModified: Date.now()
+            });
+
+            return compressedFile;
+        } catch (error) {
+            console.error("Image compression error:", error);
+            throw new Error('Failed to compress image');
+        }
+    }
+
+    async thumbnailUpload(file) {
+        try {
+            // Compress the image before uploading
+            const compressedFile = await this.compressImage(file);
+
             const response = await this.bucket.createFile(
                 config.appwriteBucketIdFImage,
                 ID.unique(),
-                file
+                compressedFile
             );
             return response;
         } catch (error) {
-            console.log("Appwrite service :: thumbnailUpload :: error", error);
-            throw error;
-            
+            console.error("Appwrite service :: thumbnailUpload :: error", error);
+            throw new Error('Failed to upload thumbnail');
         }
     }
 

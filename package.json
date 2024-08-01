@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "@tinymce/tinymce-react": "^5.1.1",
     "appwrite": "^15.0.0",
+    "browser-image-compression": "^2.0.2",
     "date-fns": "^3.6.0",
     "html-react-parser": "^5.1.10",
     "lodash": "^4.17.21",

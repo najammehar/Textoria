@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setUserData, setUserProfile } from './Store/authSlice';
 import authInstance from './Appwrite/Auth';
-// import Register from './components/SignUp';
 import CompleteProfile from './components/CompleteProfile';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
 import user from './Appwrite/User';
 import { EditPost, Home, LandingPage, Login, SignUp, Feed } from './pages';
 import { PostDetail, Sidebar, WriteEditPost } from './components';
+import Logo from './assets/Logo.png';
 
 
 const App = () => {
@@ -19,6 +19,7 @@ const App = () => {
   const [theme, setTheme] = useState('light')
   
   useEffect(() => {
+    
     if(theme === 'dark') 
       document.documentElement.classList.add('dark')
     else
@@ -29,7 +30,6 @@ const App = () => {
       setTheme(theme === 'dark' ? 'light' : 'dark')
     }
 
-  //   useEffect(() => {
   //     const fetchUserData = async () => {
   //         try {
   //             const userData = await authInstance.getUser();
@@ -134,7 +134,12 @@ const App = () => {
         </Route>
       </Routes>
     </Router>
-  ) : null;
+  ) : (<>
+    <div className="flex flex-col items-center justify-center gap-4 h-screen bg-[#000300]">
+                <img className='w-16 h-16' src={Logo} alt="Textoria" />
+                <h1 className='text-purple-60 text-3xl font-bold' >Textoria</h1>
+    </div>
+  </>);
 };
 
 export default App;

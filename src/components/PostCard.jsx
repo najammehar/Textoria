@@ -11,7 +11,6 @@ import { Oval } from 'react-loader-spinner';
 import PostAction from './PostAction';
 import defaultAvatar from '../assets/default-profile.jpg';
 
-
 function PostCard({ post, onPostDeleted}) {
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.auth.userData?.$id);
@@ -83,18 +82,18 @@ function PostCard({ post, onPostDeleted}) {
     const handleDelete = async () => {
         setIsModalOpen(true);
     };
-
+    const [showDelete, setShowDelete] = useState(false);
     const confirmDelete = async () => {
+        setIsModalOpen(false);
         try {
-            await Post.deleteThumbnail(post.thumbnail);
+                await Post.deleteThumbnail(post.thumbnail);
                 await Post.DeleteLikes(post.$id);
                 await Post.deletePost(post.$id);
-                onPostDeleted(post.$id);
+                onPostDeleted(post.$id, "Post deleted successfully");
         } catch (error) {
             console.error("Error deleting post:", error);
-        } finally {
-            setIsModalOpen(false);
         }
+        
     };
 
     const cancelDelete = () => {
@@ -136,10 +135,10 @@ function PostCard({ post, onPostDeleted}) {
 
     // Add this code after the handleShare function
 
-    const CopyMessage = () => {
+    const ShowMessage = ({message}) => {
         return (
             <div className="fixed bottom-4 right-4 bg-grey-90 dark:bg-grey-10 dark:text-white text-black shadow-lg z-10 px-4 py-2 transition-transform duration-300 rounded-md">
-                Post link copied to clipboard!
+                {message}
             </div>
         );
     };
@@ -170,6 +169,31 @@ function PostCard({ post, onPostDeleted}) {
             setLikeLoading(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className='max-w-2xl mx-auto dark:text-white text-black py-8 border-b dark:border-grey-25 border-grey-75'>
+                <div className='max-w-xl mx-auto rounded-xl overflow-hidden'>
+                    <div className=' animate-pulse bg-grey-90 dark:bg-grey-10 p-3'>
+                    <div className='mb-4 animate-pulse rounded-md dark:bg-gray-300 bg-gray-500 h-64 w-full'></div>
+                        <div className='flex mb-2 items-center justify-between w-full'>
+                            <div className='flex items-center gap-2 mb-2'>
+                                <div className='h-8 w-8 rounded-full dark:bg-gray-300 bg-gray-500'></div>
+                                <div className='flex flex-col gap-2'>
+                                    <div className='h-3 w-20 rounded-full dark:bg-gray-300 bg-gray-500'></div>
+                                    <div className='h-2 w-10 rounded-full dark:bg-gray-300 bg-gray-500'></div>
+                                </div>
+                            </div>
+                        </div>   
+                    <div className='mb-2 animate-pulse rounded-full dark:bg-gray-300 bg-gray-500  h-6 w-2/4'></div>
+                    <div className='mb-2 animate-pulse rounded-full dark:bg-gray-300 bg-gray-500  h-3 w-2/3'></div>
+                    <div className='mb-2 animate-pulse rounded-full dark:bg-gray-300 bg-gray-500  h-3 w-2/3'></div>
+                    <div className='mb-2 animate-pulse rounded-full dark:bg-gray-300 bg-gray-500  h-3 w-1/3'></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className='max-w-2xl mx-auto dark:text-white text-black py-8 border-b dark:border-grey-25 border-grey-75'>
@@ -213,7 +237,8 @@ function PostCard({ post, onPostDeleted}) {
                 </div>
             </div>
             {isModalOpen && <DeletePost />}
-            {showCopyMessage && <CopyMessage />}
+            {showCopyMessage && <ShowMessage message="Post link copied to clipboard!" />}
+            {showDelete && <ShowMessage message='Post deleted successfully'/>}
         </div>
     );
 }
