@@ -101,7 +101,7 @@ export class Post {
                 Query.orderDesc("createdAt"),
                 Query.limit(limit),
                 Query.offset(offset),
-                Query.equal("status", "public")
+                Query.equal("status", "Public")
             ];
     
             if (category) {

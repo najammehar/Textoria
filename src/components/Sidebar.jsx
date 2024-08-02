@@ -38,12 +38,14 @@ function Sidebar() {
           console.error('Logout failed:', err);
         }
       };
-
+      const handleLogoClick = () => {
+        window.location.href = '/';
+       };
 
 
   return (
     <>
-        <aside className={`hidden sm:block h-screen ${open ? "w-72" : "w-20"} dark:bg-grey-10 bg-grey-90 fixed duration-300 px-5 top-0 left-0 z-50`}>
+        <aside className={`hidden sm:block h-screen ${open ? "w-72" : "w-20"} dark:bg-grey-10 border-r border-grey-25 bg-grey-90 fixed duration-300 px-5 top-0 left-0 z-50`}>
           <div
           className={`absolute cursor-pointer -right-3 bottom-2/4 p-1 border-purple-60 dark:text-white dark:bg-grey-10  bg-grey-90
           border-2 rounded-full flex items-center justify-center  ${open && "rotate-180"}`}
@@ -54,8 +56,8 @@ function Sidebar() {
                 <Link
                 to="/"
                 className='flex items-baseline px-1'>
-                    <img className='w-6 sm:w-8' src={logoImg} alt="Logo Image" />
-                    <Logo className={`ml-[-4px] w-fit text-2xl sm:text-4xl cursor-pointer ${!open && "hidden"}`}/>
+                    <img onClick={handleLogoClick} className='w-6 sm:w-8' src={logoImg} alt="Logo Image" />
+                    <Logo onClick={handleLogoClick} className={`ml-[-4px] w-fit text-2xl sm:text-4xl cursor-pointer ${!open && "hidden"}`}/>
                 </Link>
             </div>
             <ul>
@@ -91,7 +93,7 @@ function Sidebar() {
                 <li className='group'>
                     <NavLink
                     title='Help & Support'
-                    to="/help"
+                    to="/help-and-support"
                     className={({ isActive }) => ` flex items-center gap-x-2 px-1 py-1 mb-4 dark:text-white text-sm ${isActive ? " text-white  bg-purple-60" : ""} dark:hover:bg-gray-800 hover:bg-gray-500 hover:text-white rounded-md`}
                     >
                     {({ isActive }) =>  (
@@ -198,7 +200,7 @@ function Sidebar() {
             <div className='group my-4 w-full'>
                     <NavLink
                     onClick={() => setIsOpen(false)}
-                    to="/help"
+                    to="/help-and-support"
                     className={({ isActive }) => ` flex items-center gap-x-2 text-sm ${isActive ? "text-purple-60 font-bold" : "dark:text-white text-black"}`}
                     >
                     {({ isActive }) =>  (

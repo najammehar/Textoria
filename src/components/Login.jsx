@@ -24,7 +24,6 @@ const Login = () => {
     }
     setLoading(true);
     const session = await authInstance.login(email, password);
-    console.log(session);
     if(session === 'email') {
       setError('Account not found');
     } else if (session) {

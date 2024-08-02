@@ -17,6 +17,7 @@ import PostCard from "./PostCard";
 import PostFeed from "./PostFeed";
 import Sidebar from "./Sidebar";
 import PostDetail from "./PostDetail";
+import FAQs from "./FAQs";
 
 
 export{
@@ -38,5 +39,6 @@ export{
     PostCard,
     PostFeed,
     Sidebar,
-    PostDetail
+    PostDetail,
+    FAQs
 }

@@ -8,7 +8,7 @@ import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
 import user from './Appwrite/User';
 import { EditPost, Home, LandingPage, Login, SignUp, Feed } from './pages';
-import { PostDetail, Sidebar, WriteEditPost } from './components';
+import { FAQs, PostDetail, Sidebar, WriteEditPost } from './components';
 import Logo from './assets/Logo.png';
 
 
@@ -95,17 +95,14 @@ const App = () => {
               console.error('Error fetching user profile:', profileError);
             }
           } else {
-            console.log('User data not found despite active session');
             dispatch(logout());
           }
         } else {
-          console.log('No active session found');
           dispatch(logout());
         }
       } catch (error) {
         console.error('Error in auth check or data fetching:', error);
         if (error.code === 401) {
-          console.log('Unauthorized access, user might need to log in');
         }
         dispatch(logout());
       } finally {
@@ -131,6 +128,8 @@ const App = () => {
           <Route path="edit-profile" element={<EditProfile />} />
           <Route path="/post/:postId" element={<PostDetail />} />
           <Route path="/edit-post/:postId" element={<EditPost />} />
+          <Route path="help-and-support" element={<FAQs />} />
+
         </Route>
       </Routes>
     </Router>

@@ -73,9 +73,7 @@ function WriteEditPost({post}) {
                 const file = data.image[0] ? await postService.thumbnailUpload(data.image[0]) : null;
                 if (file) {
                     await postService.deleteThumbnail(post.thumbnail);
-                }
-                console.log(file)
-                console.log(post.thumbnail);
+                };
                 const response = await postService.updatePost(
                     post.slug,
                     data.title,
@@ -161,14 +159,13 @@ function WriteEditPost({post}) {
     
     const handleThumbnailChange = (e) => {
         const file = e.target.files[0];
-        console.log('File:', file);
+
         setThumbnail(file);
     
         if (file) {
           const reader = new FileReader();
           reader.onloadend = () => {
             setThumbnailPreview(reader.result);
-            console.log('Thumbnail preview:', reader.result);
           };
           reader.readAsDataURL(file);
         }
@@ -273,7 +270,7 @@ function WriteEditPost({post}) {
         {errors.category &&<p className="text-red-500 text-sm -mt-3">{errors.category.message}</p>}
 
         <Select
-            options = {['public', 'draft']}
+            options = {['Public', 'Private']}
             label='Status'
             className = 'block w-full px-2 py-2 rounded-md border border-gray-500 dark:bg-[#171717] bg-gray-100 text-black dark:text-white'
             {...register('status', {required: 'Category is required'})}

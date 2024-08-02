@@ -62,7 +62,6 @@ export class User {
             if (response.documents.length > 0) {
                 return response.documents[0];
             } else {
-                console.log(`No profile found for userId: ${userId}`);
                 return null;
             }
         } catch (error) {
@@ -81,7 +80,6 @@ export class User {
             if (response.documents.length > 0) {
                 return true;
             } else {
-                console.log(`No profile found for email: ${email}`);
                 return false;
             }
         } catch (error) {

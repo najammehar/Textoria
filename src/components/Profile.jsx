@@ -43,7 +43,7 @@ const Profile = () => {
   // Get number of posts user has made
   const fetchPostCount = async () => {
     try {
-      const posts = await post.PostsCountByUser(userId, "public");
+      const posts = await post.PostsCountByUser(userId, "Public");
       setPostCount(posts.length);
       const likes = posts.reduce((acc, post) => acc + post.likes, 0);
       setLikeCount(likes);
@@ -177,22 +177,22 @@ const Profile = () => {
         </h2>
         {isCurrentUser && (
           <h2
-            onClick={() => setActiveTab("draft")}
+            onClick={() => setActiveTab("Private")}
             className={`text-xl font-bold border-b-2 ${
-              activeTab === "draft"
+              activeTab === "Private"
                 ? "dark:border-b-gray-100 border-b-gray-900"
                 : "border-b-gray-500"
             } w-1/2 text-center cursor-pointer duration-300`}
           >
-            Draft
+            Private posts
           </h2>
         )}
       </div>
       {activeTab === "posts" && (
-        <PostFeed key="public" userId={userId} status="public" />
+        <PostFeed key="Public" userId={userId} status="Public" />
       )}
-      {activeTab === "draft" && isCurrentUser && (
-        <PostFeed key="draft" userId={userId} status="draft" />
+      {activeTab === "Private" && isCurrentUser && (
+        <PostFeed key="Private" userId={userId} status="Private" />
       )}
     </div>
   );

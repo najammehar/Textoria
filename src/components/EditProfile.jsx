@@ -13,9 +13,6 @@ const EditProfile = () => {
   const userId = useSelector(state => state.auth.userData?.$id);
   const userService = new User();
 
-  console.log("userProfile:", userProfile);
-  console.log("userData:", userData);
-  console.log("userId:", userId);
 
   const navigate = useNavigate();
 
@@ -66,7 +63,6 @@ const EditProfile = () => {
         updatedProfile.avatar = uploadedAvatar.$id;
       }
     }
-    console.log("Updating profile for user:", userId);
     const result = await userService.updateProfile(userId, updatedProfile);
     if (result) {
       dispatch(updateProfileAction(result));
