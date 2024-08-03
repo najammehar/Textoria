@@ -123,7 +123,11 @@ function Sidebar() {
                     {({ isActive }) =>  (
                     <>
                     <div className={`w-8 h-8 rounded-full overflow-hidden `}><img className='w-full h-full object-cover' src={profile} alt="Profile" /></div>
-                    {open && <div className={`${!open && "scale-0"} mt-1`}>{user.name}</div>}
+                    {open && <div>
+                            <div className={`${!open && "scale-0"} mt-1`}>{user.name}</div>
+                            <div className={`${!open && "scale-0"} text-xs text-gray-500`}>{user.email}</div>
+                            </div>
+                    }
                     </>
                     )}
                     </NavLink>
@@ -163,7 +167,12 @@ function Sidebar() {
                     className={({ isActive }) => ` flex items-center gap-x-2 text-sm ${isActive ? "text-purple-60 font-bold" : "dark:text-white text-black"}`}
                     >
                     <div className={`w-10 h-10 rounded-full overflow-hidden `}><img className='w-full h-full object-cover' src={profile} alt="Profile" /></div>
+                    <div>
                     <div className={`mt-1`}>{user.name}</div>
+                    <div className={`text-xs text-gray-500`}>{user.email}</div>
+                    </div>
+                    
+
                     </NavLink>
             </div>
             <hr className='border-grey-45' />
@@ -231,6 +240,11 @@ function Sidebar() {
                         <DarkMode className='w-8 h-8 flex items-center justify-center' dIcon='dark:text-black' lIcon='text-white' />
                         <div>Appearance</div>
                     </div>
+            </div>
+            <hr className='border-grey-45' />
+            <div className='group my-6 w-full px-1'>
+            <p className='text-xs font-medium '>© 2024 All rights reserved</p>
+            <p className='text-xs font-normal'>Developed by <Link target='_blank' to={'https://www.linkedin.com/in/najam-ul-hassan-65b92a250/'} className='underline hover:text-[#5047eb] active:text-[#8680ff] cursor-pointer'>Najam Ul Hassan</Link></p>
             </div>
             <div className='absolute cursor-pointer top-7 right-4'>
                 <AiOutlineClose size={24} onClick={() => setIsOpen(false)} />

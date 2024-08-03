@@ -4,6 +4,7 @@ import SignUp from './SignUp';
 import Home from './Home';
 import EditPost from './EditPost';
 import Feed from './Feed';
+import WritePost from './WritePost';
 
 export {
     LandingPage,
@@ -11,5 +12,6 @@ export {
     SignUp,
     Home,
     EditPost,
-    Feed
+    Feed,
+    WritePost
 }

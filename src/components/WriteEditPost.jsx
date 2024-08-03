@@ -176,7 +176,9 @@ function WriteEditPost({post}) {
     className='max-w-5xl mx-auto px-4 flex flex-col gap-4 my-4'
     onSubmit={handleSubmit(onSubmit)}>
       {loading && <p className="text-center text-blue-500">Loading...</p>}
-        {successMessage && <p className="text-center text-green-500">{successMessage}</p>}
+        {successMessage && 
+        <p className="fixed bottom-4 right-4 px-3 py-3 dark:bg-grey-25 bg-grey-75 text-green-500 rounded-md z-50">{successMessage}</p>
+        }
       <div className='relative'>
                 <Input 
                     label='Title'

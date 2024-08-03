@@ -7,7 +7,7 @@ import CompleteProfile from './components/CompleteProfile';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
 import user from './Appwrite/User';
-import { EditPost, Home, LandingPage, Login, SignUp, Feed } from './pages';
+import { EditPost, Home, LandingPage, Login, SignUp, Feed, WritePost } from './pages';
 import { FAQs, PostDetail, Sidebar, WriteEditPost } from './components';
 import Logo from './assets/Logo.png';
 
@@ -123,7 +123,7 @@ const App = () => {
         {/* Authenticated routes */}
         <Route path="/" element={isAuthenticated ? <Home /> : <LandingPage />}>
           <Route index element={<Feed />} />
-          <Route path="write" element={<WriteEditPost />} />
+          <Route path="write" element={<WritePost />} />
           <Route path="profile/:userId" element={<Profile />} />
           <Route path="edit-profile" element={<EditProfile />} />
           <Route path="/post/:postId" element={<PostDetail />} />
