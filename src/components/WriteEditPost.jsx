@@ -204,13 +204,13 @@ function WriteEditPost({post}) {
                     {...register('slug', {
                         required: 'Slug is required',
                         maxLength: {
-                            value: 100,
-                            message: 'Slug must be 100 characters or less'
+                            value: 36,
+                            message: 'Slug must be 36 characters or less'
                         },
                         onChange: (e) => updateCharCount('slug', e.target.value)
                     })}
                 />
-                <p className="absolute bottom-[9px] right-3 text-gray-500 mt-1">{charCounts.slug}/100</p>
+                <p className="absolute bottom-[9px] right-3 text-gray-500 mt-1">{charCounts.slug}/36</p>
             </div>
             {errors.slug && errors.slug.message && <p className="text-red-500 text-sm -mt-3">{errors.slug.message}</p>}
         {slugError && <p style={{color: 'red'}}>{slugError}</p>}
