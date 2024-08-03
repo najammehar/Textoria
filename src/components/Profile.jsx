@@ -84,7 +84,7 @@ const Profile = () => {
         <img
           src={avatarUrl || defaultProfile}
           alt={`${profileData.name}'s Avatar`}
-          className="w-20 h-20 sm:w-40 sm:h-40 rounded-full mb-1 sm:mb-4"
+          className="w-20 h-20 sm:w-40 sm:h-40 rounded-full mb-1 object-cover sm:mb-4"
         />
         <div className="sm:hidden">
         <div className="flex gap-8">
